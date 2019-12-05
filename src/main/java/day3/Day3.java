@@ -22,11 +22,10 @@ public class Day3 {
         List<WireSection> wire1 = parseWire(wireCode1);
         List<WireSection> wire2 = parseWire(wireCode2);
         List<Point> intersections = findIntersections(wire1, wire2);
-        LOG.info("wire1: " + wire1);
-        LOG.info("wire2: " + wire2);
-        LOG.info("intersection: " + intersections);
         Point closestIntersection = findClosestIntersection(intersections).get();
-        return abs(closestIntersection.x) + abs(closestIntersection.y);
+        int distance = abs(closestIntersection.x) + abs(closestIntersection.y);
+        LOG.info("Day 3 Stage 1 solution is " + distance);
+        return distance;
     }
 
     public static Optional<Point> findClosestIntersection(List<Point> intersections) {
@@ -36,14 +35,10 @@ public class Day3 {
     public static List<Point> findIntersections(List<WireSection> wire1, List<WireSection> wire2) {
         List<Point> intersections = new ArrayList<>();
         wire2.forEach(wireSection -> {
-            Orientation orientationCriteria = wireSection.orientation == Orientation.vertical
-                                            ? Orientation.horizontal : Orientation.vertical;
-            wire1.stream()
-                    .filter(w -> w.orientation == orientationCriteria)
-                    .forEach(w -> {
-                        Optional<Point> intersectionResult = w.intersect(wireSection);
-                        intersectionResult.ifPresent(intersections::add);
-                    });
+            wire1.forEach(w -> {
+                    Optional<Point> intersectionResult = w.intersect(wireSection);
+                    intersectionResult.ifPresent(intersections::add);
+            });
         });
 
         return intersections;

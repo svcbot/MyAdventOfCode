@@ -1,4 +1,5 @@
 import day3.Day3;
+import day3.Orientation;
 import day3.Point;
 import day3.WireSection;
 import org.junit.Test;
@@ -52,6 +53,14 @@ public class TestDay3 {
       };
 
       assertArrayEquals("Test wirecode parsing", expected, parseWire(testWireCode).toArray());
+   }
+
+   @Test
+   public void testWireSection() {
+      WireSection wireSection1 = new WireSection(new Point(-1, -1), new Point(-99, -1));
+      WireSection wireSection2 = new WireSection(new Point(-11, -11), new Point(-11, -1));
+      assertEquals("Check orientation: ", Orientation.horizontal, wireSection1.orientation);
+      assertEquals("Check orientation: ", Orientation.vertical, wireSection2.orientation);
    }
 
 }
