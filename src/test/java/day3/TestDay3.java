@@ -1,7 +1,5 @@
-import day3.Day3;
-import day3.Orientation;
-import day3.Point;
-import day3.WireSection;
+package day3;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
