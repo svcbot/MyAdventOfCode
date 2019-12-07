@@ -34,7 +34,7 @@ public class Day3 {
         List<Point> intersections = new ArrayList<>();
         wire2.forEach(wireSection -> {
             wire1.forEach(wireSection2 -> {
-                    Optional<Point> intersectionResult = wireSection2.intersect(wireSection);
+                Optional<Point> intersectionResult = wireSection2.intersect(wireSection);
                 intersectionResult.ifPresent(e -> {
                     intersections.add(e);
                     //LOG.info("An intersection " + e + " was found between " + wireSection + " and " + wireSection2);
@@ -42,7 +42,7 @@ public class Day3 {
             });
         });
 
-        return intersections;
+        return intersections.stream().filter(i -> !i.equals(new Point())).collect(Collectors.toList());
     }
 
     public static int solveStage2() {
@@ -53,21 +53,41 @@ public class Day3 {
         List<WireSection> wire1 = parseWire(wireCode1);
         List<WireSection> wire2 = parseWire(wireCode2);
         List<Point> intersections = findIntersections(wire1, wire2);
-        int fastestIntersection = findFastestIntersection(intersections, wire1, wire2);
-        return 0;
+        int fastestCombinedPath = findFastestCombinedPath(intersections, wire1, wire2);
+        LOG.info("Day3 stage 2 solution is " + fastestCombinedPath);
+        return fastestCombinedPath;
     }
 
-    private static int findFastestIntersection(List<Point> intersections, List<WireSection> wire1, List<WireSection> wire2) {
-
-        return 0;
+    public static int findFastestCombinedPath(List<Point> intersections, List<WireSection> wire1, List<WireSection> wire2) {
+        return intersections.stream().map(i -> {
+            int wire1PathLength = findWirePath(i, wire1);
+            int wire2PathLength = findWirePath(i, wire2);
+            return wire1PathLength + wire2PathLength;
+        }).min(Comparator.comparing(Integer::valueOf)).orElse(-1);
     }
+
+    private static int findWirePath(Point i, List<WireSection> wire) {
+        int pathLength = 0;
+
+        for (WireSection wireSection : wire) {
+            if (wireSection.contains(i)) {
+                pathLength += wireSection.start.distanceTo(i);
+                return pathLength;
+            } else {
+                pathLength += wireSection.length;
+            }
+        }
+
+        return pathLength;
+    }
+
 
     public static List<WireSection> parseWire(String wireCode) {
         Point startingPoint = new Point();
         List<WireSection> wireSectionList = new ArrayList<>();
 
         List<String> encodedWireSectionList = Arrays.stream(wireCode.split(",")).collect(Collectors.toList());
-        for (String encodedWireSection: encodedWireSectionList) {
+        for (String encodedWireSection : encodedWireSectionList) {
             WireSection wireSection = new WireSection(startingPoint, encodedWireSection);
             wireSectionList.add(wireSection);
             startingPoint = wireSection.end;

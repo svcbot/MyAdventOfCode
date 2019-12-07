@@ -6,33 +6,40 @@ import java.util.Optional;
 public class WireSection {
     public Point start;
     public Point end;
+    public int lowerX;
+    public int upperX;
+    public int lowerY;
+    public int upperY;
     public Orientation orientation;
     public int length;
 
     public WireSection(Point start, Point end) {
         this.start = start;
         this.end = end;
+        this.lowerX = Math.min(start.x, end.x);
+        this.upperX = Math.max(start.x, end.x);
+        this.lowerY = Math.min(start.y, end.y);
+        this.upperY = Math.max(start.y, end.y);
         if (start.x == end.x) {
             orientation = Orientation.vertical;
         } else if (start.y == end.y) {
             orientation = Orientation.horizontal;
         }
+        length = start.distanceTo(end);
     }
 
     public WireSection(int startX, int startY, int endX, int endY) {
-        this(new  Point(startX, startY), new Point(endX, endY));
+        this(new Point(startX, startY), new Point(endX, endY));
     }
 
     public WireSection(Point start, String directionCode) {
-        this.start = start;
-        parseDirectionCode(directionCode);
+        this(start, getEndFromDirectionCode(start, directionCode));
     }
 
-    private void parseDirectionCode(String directionCode) {
-        String direction = directionCode.substring(0,1);
-        length = Integer.parseInt(directionCode.substring(1));
-        parseOrientation(direction);
-        this.end = start.add(direction, length);
+    private static Point getEndFromDirectionCode(Point start, String directionCode) {
+        String direction = directionCode.substring(0, 1);
+        int length = Integer.parseInt(directionCode.substring(1));
+        return start.add(direction, length);
     }
 
     public void parseOrientation(String directionChar) {
@@ -46,22 +53,14 @@ public class WireSection {
     public Optional<Point> intersect(WireSection wireSection) {
         if (wireSection.orientation != orientation) {
             if (orientation == Orientation.vertical) {
-                int lowerX = Math.min(wireSection.start.x, wireSection.end.x);
-                int upperX = Math.max(wireSection.start.x, wireSection.end.x);
-                int lowerY = Math.min(start.y, end.y);
-                int upperY = Math.max(start.y, end.y);
                 if (lowerY <= wireSection.start.y && wireSection.start.y <= upperY
-                        && lowerX <= start.x && start.x <= upperX
+                        && wireSection.lowerX <= start.x && start.x <= wireSection.upperX
                 ) {
                     return Optional.of(new Point(start.x, wireSection.start.y));
                 }
             } else {
-                int lowerX = Math.min(start.x, end.x);
-                int upperX = Math.max(start.x, end.x);
-                int lowerY = Math.min(wireSection.start.y, wireSection.end.y);
-                int upperY = Math.max(wireSection.start.y, wireSection.end.y);
                 if (lowerX <= wireSection.start.x && wireSection.start.x <= upperX
-                        && lowerY <= start.y && start.y <= upperY
+                        && wireSection.lowerY <= start.y && start.y <= wireSection.upperY
                 ) {
                     return Optional.of(new Point(wireSection.start.x, end.y));
                 }
@@ -91,5 +90,9 @@ public class WireSection {
     @Override
     public int hashCode() {
         return Objects.hash(start, end);
+    }
+
+    public boolean contains(Point i) {
+        return lowerX <= i.x && i.x <= upperX && lowerY <= i.y && i.y <= upperY;
     }
 }

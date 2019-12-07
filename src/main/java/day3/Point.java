@@ -26,8 +26,13 @@ public class Point {
                 return new Point(x, y + length);
             case "D":
                 return new Point(x, y - length);
-            default: return null;
+            default:
+                return null;
         }
+    }
+
+    public int distanceTo(Point point) {
+        return Math.abs(x - point.x) + Math.abs(y - point.y);
     }
 
     @Override
