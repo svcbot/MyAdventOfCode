@@ -1,7 +1,5 @@
 package day3;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -23,7 +21,7 @@ public class Day3 {
         List<WireSection> wire2 = parseWire(wireCode2);
         List<Point> intersections = findIntersections(wire1, wire2);
         Point closestIntersection = findClosestIntersection(intersections).get();
-        int distance = abs(closestIntersection.x) + abs(closestIntersection.y);
+        int distance = distanceOnGrid(closestIntersection);
         LOG.info("Day 3 Stage 1 solution is " + distance);
         return distance;
     }
@@ -35,17 +33,33 @@ public class Day3 {
     public static List<Point> findIntersections(List<WireSection> wire1, List<WireSection> wire2) {
         List<Point> intersections = new ArrayList<>();
         wire2.forEach(wireSection -> {
-            wire1.forEach(w -> {
-                    Optional<Point> intersectionResult = w.intersect(wireSection);
-                    intersectionResult.ifPresent(intersections::add);
+            wire1.forEach(wireSection2 -> {
+                    Optional<Point> intersectionResult = wireSection2.intersect(wireSection);
+                intersectionResult.ifPresent(e -> {
+                    intersections.add(e);
+                    //LOG.info("An intersection " + e + " was found between " + wireSection + " and " + wireSection2);
+                });
             });
         });
 
         return intersections;
     }
 
-    public static void solveStage2() {
+    public static int solveStage2() {
+        return solveStage2(puzzleInput1, puzzleInput2);
+    }
 
+    public static int solveStage2(String wireCode1, String wireCode2) {
+        List<WireSection> wire1 = parseWire(wireCode1);
+        List<WireSection> wire2 = parseWire(wireCode2);
+        List<Point> intersections = findIntersections(wire1, wire2);
+        int fastestIntersection = findFastestIntersection(intersections, wire1, wire2);
+        return 0;
+    }
+
+    private static int findFastestIntersection(List<Point> intersections, List<WireSection> wire1, List<WireSection> wire2) {
+
+        return 0;
     }
 
     public static List<WireSection> parseWire(String wireCode) {
@@ -60,6 +74,10 @@ public class Day3 {
         }
 
         return wireSectionList;
+    }
+
+    public static int distanceOnGrid(Point point) {
+        return Math.abs(point.x) + Math.abs(point.y);
     }
 
 

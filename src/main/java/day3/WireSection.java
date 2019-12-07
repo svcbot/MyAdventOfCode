@@ -2,12 +2,12 @@ package day3;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 public class WireSection {
     public Point start;
     public Point end;
     public Orientation orientation;
+    public int length;
 
     public WireSection(Point start, Point end) {
         this.start = start;
@@ -19,6 +19,10 @@ public class WireSection {
         }
     }
 
+    public WireSection(int startX, int startY, int endX, int endY) {
+        this(new  Point(startX, startY), new Point(endX, endY));
+    }
+
     public WireSection(Point start, String directionCode) {
         this.start = start;
         parseDirectionCode(directionCode);
@@ -26,7 +30,7 @@ public class WireSection {
 
     private void parseDirectionCode(String directionCode) {
         String direction = directionCode.substring(0,1);
-        int length = Integer.parseInt(directionCode.substring(1));
+        length = Integer.parseInt(directionCode.substring(1));
         parseOrientation(direction);
         this.end = start.add(direction, length);
     }
@@ -42,15 +46,23 @@ public class WireSection {
     public Optional<Point> intersect(WireSection wireSection) {
         if (wireSection.orientation != orientation) {
             if (orientation == Orientation.vertical) {
-                int smallerY = Math.min(start.y, end.y);
-                int biggerY = Math.max(start.y, end.y);
-                if (smallerY <= wireSection.start.y && wireSection.start.y <= biggerY) {
+                int lowerX = Math.min(wireSection.start.x, wireSection.end.x);
+                int upperX = Math.max(wireSection.start.x, wireSection.end.x);
+                int lowerY = Math.min(start.y, end.y);
+                int upperY = Math.max(start.y, end.y);
+                if (lowerY <= wireSection.start.y && wireSection.start.y <= upperY
+                        && lowerX <= start.x && start.x <= upperX
+                ) {
                     return Optional.of(new Point(start.x, wireSection.start.y));
                 }
             } else {
-                int smallerX = Math.min(start.x, end.x);
-                int biggerX = Math.max(start.x, end.x);
-                if (smallerX <= wireSection.start.x && wireSection.start.x <= biggerX) {
+                int lowerX = Math.min(start.x, end.x);
+                int upperX = Math.max(start.x, end.x);
+                int lowerY = Math.min(wireSection.start.y, wireSection.end.y);
+                int upperY = Math.max(wireSection.start.y, wireSection.end.y);
+                if (lowerX <= wireSection.start.x && wireSection.start.x <= upperX
+                        && lowerY <= start.y && start.y <= upperY
+                ) {
                     return Optional.of(new Point(wireSection.start.x, end.y));
                 }
             }

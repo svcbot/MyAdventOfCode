@@ -4,9 +4,8 @@ import day3.Point;
 import day3.WireSection;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static day3.Day3.*;
@@ -21,24 +20,68 @@ public class TestDay3 {
    }
 
    @Test
-   public void testFindIntersection() {
+   public void testFindIntersections() {
       List<WireSection> wire1 = new ArrayList<WireSection>();
       List<WireSection> wire2 = new ArrayList<WireSection>();
 
-      wire1.add(new WireSection(new Point(0,2), new Point(2,2)));
-      wire2.add(new WireSection(new Point(1,0), new Point(1, 3)));
-      wire1.add((new WireSection(new Point(-2, -4), new Point(0, -4))));
-      wire2.add((new WireSection(new Point(-1,-2), new Point(-1,-6))));
-      Point[] expected = {new Point(1,2), new Point(-1,-4)};
-      assertArrayEquals("Expected intersections", expected, findIntersections(wire1, wire2).toArray());
+      wire1.add(new WireSection(25,50,75,50));
+      wire2.add(new WireSection(50,25,50,75));
+      assertEquals("Upper right quadrant", new Point(50,50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
+
+      wire1.add(new WireSection(25,-50,75,-50));
+      wire2.add(new WireSection(50,-25,50,-75));
+      assertEquals("Lower right quadrant", new Point(50,-50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
+
+      wire1.add(new WireSection(-25,50,-75,50));
+      wire2.add(new WireSection(-50,25,-50,75));
+      assertEquals("Upper left quadrant", new Point(-50,50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
+
+      wire1.add(new WireSection(-25,-50,-75,-50));
+      wire2.add(new WireSection(-50,-25,-50,-75));
+      assertEquals("Lower left quadrant", new Point(-50,-50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
+
+      wire1.add(new WireSection(50,25,50,75));
+      wire2.add(new WireSection(25,50,75,50));
+      assertEquals("Upper right quadrant", new Point(50,50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
+
+      wire1.add(new WireSection(50,-25,50,-75));
+      wire2.add(new WireSection(25,-50,75,-50));
+      assertEquals("Lower right quadrant", new Point(50,-50), findIntersections(wire1, wire2).get(0));
+      wire2.clear();
+      wire1.clear();
+
+      wire1.add(new WireSection(-50,25,-50,75));
+      wire2.add(new WireSection(-25,50,-75,50));
+      assertEquals("Upper left quadrant", new Point(-50,50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
+
+      wire1.add(new WireSection(-50,-25,-50,-75));
+      wire2.add(new WireSection(-25,-50,-75,-50));
+      assertEquals("Lower left quadrant", new Point(-50,-50), findIntersections(wire1, wire2).get(0));
+      wire1.clear();
+      wire2.clear();
    }
 
    @Test
    public void testFindClosestIntersection() {
       List<Point> intersections = new ArrayList<>();
       intersections.add(new Point(10, 10));
+      intersections.add(new Point(-15, 5));
       intersections.add(new Point(-5, -5));
 
+      assertEquals("Expected closest intersection", new Point(-5,-5), findClosestIntersection(intersections).get());
+      Collections.reverse(intersections);
       assertEquals("Expected closest intersection", new Point(-5,-5), findClosestIntersection(intersections).get());
    }
 
@@ -46,10 +89,10 @@ public class TestDay3 {
    public void testParseWire() {
       String testWireCode = "R75,D30,R83,U83";
       WireSection[] expected = {
-              new WireSection(new Point(0, 0), new Point(75, 0)),
-              new WireSection(new Point(75, 0), new Point(75, -30)),
-              new WireSection(new Point(75, -30), new Point(158, -30)),
-              new WireSection(new Point(158, -30), new Point(158, 53))
+              new WireSection(0,0,75,0),
+              new WireSection(75,0,75,-30),
+              new WireSection(75,-30,158,-30),
+              new WireSection(158,-30,158,53)
       };
 
       assertArrayEquals("Test wirecode parsing", expected, parseWire(testWireCode).toArray());
