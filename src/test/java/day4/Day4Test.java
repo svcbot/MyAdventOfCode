@@ -8,12 +8,18 @@ import static org.junit.Assert.assertTrue;
 public class Day4Test {
 
     @Test
-    public void containsPair() {
+    public void containsTwo() {
         int testPassword1 = 123456;
-        assertFalse("Test contains double", Day4.containsPair(testPassword1));
+        assertFalse("Test contains double", Day4.containsTwo(testPassword1));
+        assertFalse("Test contains double", Day4.containsExactlyTwo(testPassword1));
 
         int testPassword2 = 112233;
-        assertTrue("Test contains double", Day4.containsPair(testPassword2));
+        assertTrue("Test contains double", Day4.containsTwo(testPassword2));
+        assertTrue("Test contains double", Day4.containsExactlyTwo(testPassword2));
+
+        int testPassword3 = 123334;
+        assertTrue("Test contains double", Day4.containsTwo(testPassword3));
+        assertFalse("Test contains double", Day4.containsExactlyTwo(testPassword3));
     }
 
     @Test
