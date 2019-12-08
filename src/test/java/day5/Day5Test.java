@@ -74,6 +74,7 @@ public class Day5Test {
         assertEquals("Test LT PM >= 8", 0, (int) computer.output.get(0));
 
         // Test LT instruction in immediate mode
+
         String ltImmediateModeTestProgram = "3,3,1107,-1,8,3,4,3,99";
 
         computer.loadMemory(ltImmediateModeTestProgram);
@@ -89,5 +90,42 @@ public class Day5Test {
         computer.loadInput(input);
         computer.run();
         assertEquals("Test LT IM >= 8", 0, (int) computer.output.get(0));
+    }
+
+    @Test
+    public void testJumpInstructions() {
+
+        Computer computer = new Computer();
+        List<Integer> input = new ArrayList<>();
+
+        // Test jump instructions in position mode
+
+        String jumpPositionModeTestProgram = "3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9";
+        computer.loadMemory(jumpPositionModeTestProgram);
+        input.add(0);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Test jumps negative", 0, (int) computer.output.get(0));
+
+        computer.loadMemory(jumpPositionModeTestProgram);
+        input.add(10);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Test jumps positive", 1, (int) computer.output.get(0));
+
+        // Test jump instructions in immediate mode
+
+        String jumpImmediateModeTestProgram = "3,3,1105,-1,9,1101,0,0,12,4,12,99,1";
+        computer.loadMemory(jumpImmediateModeTestProgram);
+        input.add(0);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Test jumps negative", 0, (int) computer.output.get(0));
+
+        computer.loadMemory(jumpImmediateModeTestProgram);
+        input.add(10);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Test jumps positive", 1, (int) computer.output.get(0));
     }
 }

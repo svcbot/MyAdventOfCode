@@ -18,7 +18,7 @@ public class Computer {
     // flags
     boolean ERROR = false;
     boolean DONE = false;
-    boolean DEBUG = false;
+    boolean DEBUG = true;
 
     public Computer() {
 
@@ -154,8 +154,10 @@ public class Computer {
                 OUT(2, instruction.params.get(0));
                 break;
             case 5:
+                JIT(instruction.params.get(0), instruction.params.get(1));
+                break;
             case 6:
-                ERROR = true; // not implemented yet
+                JIF(instruction.params.get(0), instruction.params.get(1));
                 break;
             case 7:
                 LT(instruction.params.get(0), instruction.params.get(1), instruction.params.get(2));
@@ -172,6 +174,34 @@ public class Computer {
         }
 
         instructionPointer += instruction.offset;
+    }
+
+    /**
+     * Jump if false or jump if zero. Has nothing to do with pictures.
+     * If the value from param 1 is  zero,  then set the value of the
+     * instruction pointer to the value of the param2
+     *
+     * @param param1 jump condition
+     * @param param2 new ip value if condition is satisfied
+     */
+    private void JIF(Param param1, Param param2) {
+        MOV(0, param1);
+        MOV(1, param2);
+        if (registers[0] == 0) instructionPointer = registers[1];
+    }
+
+    /**
+     * Jump if true. If the value from param 1 is non zero,
+     * set the value of the instruction pointer to the value
+     * of the param2
+     *
+     * @param param1 jump condition
+     * @param param2 new ip value if condition is satisfied
+     */
+    private void JIT(Param param1, Param param2) {
+        MOV(0, param1);
+        MOV(1, param2);
+        if (registers[0] != 0) instructionPointer = registers[1];
     }
 
     private void LT(Param param1, Param param2, Param param3) {
