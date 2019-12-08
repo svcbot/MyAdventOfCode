@@ -86,10 +86,14 @@ public class Computer {
                 return new Instruction(
                         opcode,
                         paramModes,
-                        0
+                        1
+                );
+            default:
+                return new Instruction(
+                        opcode,
+                        paramModes
                 );
         }
-        return null;
     }
 
     public void run() {

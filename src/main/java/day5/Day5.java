@@ -15,7 +15,7 @@ public class Day5 {
         return solveStage1(puzzleInput);
     }
 
-    private static int solveStage1(String puzzleInput) {
+    public static int solveStage1(String puzzleInput) {
 
         List<Integer> input = new ArrayList<Integer>();
         input.add(1);
@@ -23,10 +23,10 @@ public class Day5 {
         computer.run();
 
         List<Integer> output = computer.output;
-        if (analyzeOutput(output)) {
-            LOG.info("Full output is:\n" + output);
-            Integer diagnosticsCode = output.get(output.size() - 1);
+        LOG.info("Full output is:\n" + output);
 
+        if (analyzeOutput(output)) {
+            Integer diagnosticsCode = output.get(output.size() - 1);
             LOG.info("Solution for day5 stage 1 is " + diagnosticsCode);
             return diagnosticsCode;
         } else {
@@ -35,15 +35,45 @@ public class Day5 {
         }
     }
 
+    public static int solveStage2() {
+        return solveStage2(puzzleInput);
+    }
+
+    public static int solveStage2(String puzzleInput) {
+
+        List<Integer> input = new ArrayList<Integer>();
+        input.add(5);
+        Computer computer = new Computer(puzzleInput, input);
+        computer.run();
+
+        List<Integer> output = computer.output;
+        LOG.info("Full output is:\n" + output);
+
+        if (analyzeOutput(output)) {
+            Integer diagnosticsCode = output.get(output.size() - 1);
+            LOG.info("Solution for day5 stage 2 is " + diagnosticsCode);
+            return diagnosticsCode;
+        } else {
+            LOG.warning("Something is wrong!");
+            return -1;
+        }
+    }
+
+    /**
+     * Checks whether every test returns a zero and that the diagnostics output is a non zero number
+     *
+     * @param output Output after running the TEST program with an input.
+     * @return whether all tests were successful
+     */
     private static boolean analyzeOutput(List<Integer> output) {
-        // check if every test returns 0
+        if (output.isEmpty()) return false;
+
         for (int i = 0; i < output.size() - 1; i++) {
             Integer o = output.get(i);
             if (o != 0) return false;
         }
-        // check the last diagnostics code, must be non zero
+
         return output.get(output.size() - 1) != 0;
     }
-
 
 }
