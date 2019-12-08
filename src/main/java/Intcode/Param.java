@@ -8,4 +8,12 @@ public class Param {
         this.value = value;
         this.mode = mode;
     }
+
+    @Override
+    public String toString() {
+        return "Param{" +
+                "value=" + value +
+                ", mode=" + mode +
+                '}';
+    }
 }

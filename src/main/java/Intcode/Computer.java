@@ -18,6 +18,7 @@ public class Computer {
     // flags
     boolean ERROR = false;
     boolean DONE = false;
+    boolean DEBUG = false;
 
     public Computer() {
 
@@ -36,24 +37,31 @@ public class Computer {
         this.input = input;
     }
 
+    /**
+     * Loads new intcode into the memory. All flags and inputs are reset.
+     *
+     * @param intcode Program to execute on the computer
+     */
     public void loadMemory(String intcode) {
         this.memory = Arrays.stream(intcode.split(","))
                 .map(Integer::valueOf)
                 .collect(Collectors.toList());
         instructionPointer = 0;
-        resetFlags();
+        reset();
     }
 
-    private void resetFlags() {
+    private void reset() {
         ERROR = false;
         DONE = false;
+        input.clear();
+        output.clear();
     }
 
     public void loadMemory(List<Integer> intcode) {
         this.memory = intcode;
     }
 
-    public void loadInput(ArrayList<Integer> input) {
+    public void loadInput(List<Integer> input) {
         this.input = input;
     }
 
@@ -68,6 +76,8 @@ public class Computer {
         switch (opcode) {
             case 1:
             case 2:
+            case 7:
+            case 8:
                 return new Instruction(
                         opcode,
                         paramModes,
@@ -84,8 +94,6 @@ public class Computer {
                 );
             case 5:
             case 6:
-            case 7:
-            case 8:
                 return new Instruction(
                         opcode,
                         paramModes,
@@ -112,32 +120,48 @@ public class Computer {
         while (!ERROR && !DONE) {
             instructionCode = fetch();
             Instruction instruction = decode(instructionCode);
+
+            if (DEBUG) {
+                LOG.info("IP: " + instructionPointer
+                        + "\nExecuting: : " + instruction
+                        + "\nMemory dump: " + memory
+                        + "\nRegisters dump: " + Arrays.toString(registers)
+                        + "\nInput: " + input
+                        + "\nOutput: " + output
+                        + "\n-----------------------------");
+            }
+
             execute(instruction);
             if (instructionPointer >= memory.size()) ERROR = true;
         }
-//        if(DONE && !ERROR) LOG.info("Run successful!");
+        if (ERROR) LOG.warning("Error occurred during run!");
+//        if(DONE && !ERROR) LOG.info("Run successful!\n--------------------");
     }
 
     private void execute(Instruction instruction) {
 
         switch (instruction.opcode) {
             case 1:
-                mov(0, instruction.params.get(0));
-                mov(1, instruction.params.get(1));
-                add(0, 1, 2, instruction.params.get(2));
+                ADD(instruction.params.get(0), instruction.params.get(1), instruction.params.get(2));
                 break;
             case 2:
-                mov(0, instruction.params.get(0));
-                mov(1, instruction.params.get(1));
-                mult(0, 1, 2, instruction.params.get(2));
+                MULT(instruction.params.get(0), instruction.params.get(1), instruction.params.get(2));
                 break;
             case 3:
-                mov(0, instruction.params.get(0));
-                in(0, instruction.params.get(0));
+                IN(2, instruction.params.get(0));
                 break;
             case 4:
-                mov(0, instruction.params.get(0));
-                out(0, instruction.params.get(0));
+                OUT(2, instruction.params.get(0));
+                break;
+            case 5:
+            case 6:
+                ERROR = true; // not implemented yet
+                break;
+            case 7:
+                LT(instruction.params.get(0), instruction.params.get(1), instruction.params.get(2));
+                break;
+            case 8:
+                EQ(instruction.params.get(0), instruction.params.get(1), instruction.params.get(2));
                 break;
             case 99:
                 DONE = true;
@@ -147,37 +171,56 @@ public class Computer {
                 ERROR = true;
         }
 
-        instructionPointer += instruction.length;
+        instructionPointer += instruction.offset;
     }
 
-    private void out(int regIndex, Param param) {
-        mov(regIndex, param);
+    private void LT(Param param1, Param param2, Param param3) {
+        MOV(0, param1);
+        MOV(1, param2);
+        registers[2] = registers[0] < registers[1] ? 1 : 0;
+        LOAD(2, param3);
+    }
+
+    private void EQ(Param param1, Param param2, Param param3) {
+        MOV(0, param1);
+        MOV(1, param2);
+        registers[2] = registers[0] == registers[1] ? 1 : 0;
+        LOAD(2, param3);
+    }
+
+    private void OUT(int regIndex, Param param) {
+        MOV(regIndex, param);
         output.add(registers[regIndex]);
     }
 
-    private void in(int regIndex, Param param) {
+    private void IN(int regIndex, Param param) {
+        MOV(regIndex, param);
         registers[regIndex] = input.remove(0);
-        load(regIndex, param);
+        LOAD(regIndex, param);
     }
 
-    private void mult(int param1, int param2, int regIndex, Param param) {
-        registers[regIndex] = registers[param1] * registers[param2];
-        load(regIndex, param);
+    private void MULT(Param param1, Param param2, Param param3) {
+        MOV(0, param1);
+        MOV(1, param2);
+        registers[2] = registers[0] * registers[1];
+        LOAD(2, param3);
     }
 
-    private void add(int param1, int param2, int regIndex, Param param) {
-        registers[regIndex] = registers[param1] + registers[param2];
-        load(regIndex, param);
+    private void ADD(Param param1, Param param2, Param param3) {
+        MOV(0, param1);
+        MOV(1, param2);
+        registers[2] = registers[0] + registers[1];
+        LOAD(2, param3);
     }
 
     /**
-     * Read from memory and write into regIndex
+     * Read from memory and write into register regIndex
      *
      * @param regIndex index of the regIndex
      * @param param    instruction parameter,
      *                 which contains parameter value and parameter mode
      */
-    private void mov(int regIndex, Param param) {
+    private void MOV(int regIndex, Param param) {
         if (param.mode == 0) {
             registers[regIndex] = memory.get(param.value);
         } else if (param.mode == 1) {
@@ -189,13 +232,13 @@ public class Computer {
     }
 
     /**
-     * Read from regIndex and write into memory
+     * Read from register regIndex and write into memory
      *
      * @param regIndex index of the regIndex
      * @param param    instruction parameter,
      *                 which contains parameter value and parameter mode
      */
-    private void load(int regIndex, Param param) {
+    private void LOAD(int regIndex, Param param) {
         // will never be in immediate mode
         memory.set(param.value, registers[regIndex]);
     }
