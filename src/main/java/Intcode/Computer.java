@@ -45,19 +45,20 @@ public class Computer {
         this.memory = Arrays.stream(intcode.split(","))
                 .map(Integer::valueOf)
                 .collect(Collectors.toList());
-        instructionPointer = 0;
         reset();
     }
 
     private void reset() {
         ERROR = false;
         DONE = false;
+        instructionPointer = 0;
         input.clear();
         output.clear();
     }
 
     public void loadMemory(List<Integer> intcode) {
         this.memory = intcode;
+        reset();
     }
 
     public void loadInput(List<Integer> input) {
@@ -166,7 +167,7 @@ public class Computer {
 
     /**
      * Jump if false or jump if zero. Has nothing to do with pictures.
-     * If the value from param 1 is  zero,  then set the value of the
+     * If the value from param 1 is zero, then set the value of the
      * instruction pointer to the value of the param2
      *
      * @param param1 jump condition
@@ -180,13 +181,11 @@ public class Computer {
         } else {
             instructionPointer += 3;
         }
-
     }
 
     /**
-     * Jump if true. If the value from param 1 is non zero,
-     * set the value of the instruction pointer to the value
-     * of the param2
+     * Jump if true. If the value from param 1 is non zero, set the value
+     * of the instruction pointer to the value of the param2
      *
      * @param param1 jump condition
      * @param param2 new ip value if condition is satisfied
