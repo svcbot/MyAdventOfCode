@@ -128,4 +128,32 @@ public class Day5Test {
         computer.run();
         assertEquals("Test jumps positive", 1, (int) computer.output.get(0));
     }
+
+    @Test
+    public void testComplexExample() {
+        String complexTestProgram = "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31," +
+                "1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104," +
+                "999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
+
+        Computer computer = new Computer();
+        List<Integer> input = new ArrayList<>();
+
+        computer.loadMemory(complexTestProgram);
+        input.add(7);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Complex test < 8", 999, (int) computer.output.get(0));
+
+        computer.loadMemory(complexTestProgram);
+        input.add(8);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Complex test == 8", 1000, (int) computer.output.get(0));
+
+        computer.loadMemory(complexTestProgram);
+        input.add(9);
+        computer.loadInput(input);
+        computer.run();
+        assertEquals("Complex test == 8", 1001, (int) computer.output.get(0));
+    }
 }

@@ -18,7 +18,6 @@ public class Computer {
     // flags
     boolean ERROR = false;
     boolean DONE = false;
-    boolean DEBUG = true;
 
     public Computer() {
 
@@ -120,17 +119,6 @@ public class Computer {
         while (!ERROR && !DONE) {
             instructionCode = fetch();
             Instruction instruction = decode(instructionCode);
-
-            if (DEBUG) {
-                LOG.info("IP: " + instructionPointer
-                        + "\nExecuting: : " + instruction
-                        + "\nMemory dump: " + memory
-                        + "\nRegisters dump: " + Arrays.toString(registers)
-                        + "\nInput: " + input
-                        + "\nOutput: " + output
-                        + "\n-----------------------------");
-            }
-
             execute(instruction);
             if (instructionPointer >= memory.size()) ERROR = true;
         }
@@ -187,7 +175,12 @@ public class Computer {
     private void JIF(Param param1, Param param2) {
         MOV(0, param1);
         MOV(1, param2);
-        if (registers[0] == 0) instructionPointer = registers[1];
+        if (registers[0] == 0) {
+            instructionPointer = registers[1];
+        } else {
+            instructionPointer += 3;
+        }
+
     }
 
     /**
@@ -201,9 +194,21 @@ public class Computer {
     private void JIT(Param param1, Param param2) {
         MOV(0, param1);
         MOV(1, param2);
-        if (registers[0] != 0) instructionPointer = registers[1];
+        if (registers[0] != 0) {
+            instructionPointer = registers[1];
+        } else {
+            instructionPointer += 3;
+        }
     }
 
+    /**
+     * Less then. Checks whether the value of param1 is less then the value
+     * of the param2. Stores 0 or 1 in the memory at the offset of param3.value
+     *
+     * @param param1 first value
+     * @param param2 second value
+     * @param param3 pointer to store the result of the comparison
+     */
     private void LT(Param param1, Param param2, Param param3) {
         MOV(0, param1);
         MOV(1, param2);
@@ -211,6 +216,14 @@ public class Computer {
         LOAD(2, param3);
     }
 
+    /**
+     * Equal. Checks whether values of param1 and param2 are equal.
+     * Store 0 or 1 in the memory at the offset of param3.value
+     *
+     * @param param1 first value
+     * @param param2 second value
+     * @param param3 pointer to store the result of the comparison
+     */
     private void EQ(Param param1, Param param2, Param param3) {
         MOV(0, param1);
         MOV(1, param2);

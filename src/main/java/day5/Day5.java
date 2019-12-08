@@ -49,14 +49,9 @@ public class Day5 {
         List<Integer> output = computer.output;
         LOG.info("Full output is:\n" + output);
 
-        if (analyzeOutput(output)) {
-            Integer diagnosticsCode = output.get(output.size() - 1);
-            LOG.info("Solution for day5 stage 2 is " + diagnosticsCode);
-            return diagnosticsCode;
-        } else {
-            LOG.warning("Something is wrong!");
-            return -1;
-        }
+        Integer diagnosticsCode = output.get(0);
+        LOG.info("Solution for day5 stage 2 is " + diagnosticsCode);
+        return diagnosticsCode;
     }
 
     /**
