@@ -25,21 +25,24 @@ public class Day5 {
         List<Integer> output = computer.output;
         if (analyzeOutput(output)) {
             LOG.info("Full output is:\n" + output);
-            Integer diagnosticsCode = output.remove(output.size() - 1);
+            Integer diagnosticsCode = output.get(output.size() - 1);
 
             LOG.info("Solution for day5 stage 1 is " + diagnosticsCode);
             return diagnosticsCode;
+        } else {
+            LOG.warning("Something is wrong!");
+            return -1;
         }
-
-        return 0;
     }
 
     private static boolean analyzeOutput(List<Integer> output) {
-        output.remove(output.size() - 1);
-        for (Integer o : output) {
+        // check if every test returns 0
+        for (int i = 0; i < output.size() - 1; i++) {
+            Integer o = output.get(i);
             if (o != 0) return false;
         }
-        return true;
+        // check the last diagnostics code, must be non zero
+        return output.get(output.size() - 1) != 0;
     }
 
 
