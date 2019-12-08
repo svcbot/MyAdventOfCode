@@ -3,6 +3,8 @@ package Intcode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Intcode.Computer.LOG;
+
 public class Instruction {
     int opcode;
     int length;
@@ -14,6 +16,8 @@ public class Instruction {
         switch (opcode) {
             case 1:
             case 2:
+            case 7:
+            case 8:
                 params.add(new Param(args[0], paramModes % 10));
                 params.add(new Param(args[1], (paramModes / 10) % 10));
                 params.add(new Param(args[2], (paramModes / 100) % 10));
@@ -24,8 +28,17 @@ public class Instruction {
                 params.add(new Param(args[0], paramModes % 10));
                 length = 2;
                 break;
+            case 5:
+            case 6:
+                params.add(new Param(args[0], paramModes % 10));
+                params.add(new Param(args[1], (paramModes / 10) % 10));
+                length = 0;
+                break;
             case 99:
                 length = 1;
+                break;
+            default:
+                LOG.warning("Unknown instruction created: " + opcode);
                 break;
         }
     }

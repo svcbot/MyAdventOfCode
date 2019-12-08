@@ -82,6 +82,16 @@ public class Computer {
                         paramModes,
                         memory.get(instructionPointer + 1)
                 );
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                return new Instruction(
+                        opcode,
+                        paramModes,
+                        memory.get(instructionPointer + 1),
+                        memory.get(instructionPointer + 2)
+                );
             case 99:
                 return new Instruction(
                         opcode,
@@ -89,6 +99,7 @@ public class Computer {
                         1
                 );
             default:
+                LOG.warning("Unknown instruction code decoded: " + opcode);
                 return new Instruction(
                         opcode,
                         paramModes
@@ -104,7 +115,6 @@ public class Computer {
             execute(instruction);
             if (instructionPointer >= memory.size()) ERROR = true;
         }
-
 //        if(DONE && !ERROR) LOG.info("Run successful!");
     }
 
@@ -133,7 +143,7 @@ public class Computer {
                 DONE = true;
                 break;
             default:
-                LOG.warning("Unknown opcode:" + instruction.opcode);
+                LOG.warning("Could not execute an unknown instruction: " + instruction.opcode);
                 ERROR = true;
         }
 
