@@ -100,6 +100,8 @@ public class Computer {
             execute(instruction);
             if (instructionPointer >= memory.size()) ERROR = true;
         }
+
+//        if(DONE && !ERROR) LOG.info("Run successful!");
     }
 
     private void execute(Instruction instruction) {
@@ -117,11 +119,11 @@ public class Computer {
                 break;
             case 3:
                 mov(0, instruction.params.get(0));
-                in(0, instruction.params.get(1));
+                in(0, instruction.params.get(0));
                 break;
             case 4:
                 mov(0, instruction.params.get(0));
-                out(0, instruction.params.get(1));
+                out(0, instruction.params.get(0));
                 break;
             case 99:
                 DONE = true;
@@ -135,11 +137,13 @@ public class Computer {
     }
 
     private void out(int regIndex, Param param) {
-
+        mov(regIndex, param);
+        output.add(registers[regIndex]);
     }
 
     private void in(int regIndex, Param param) {
-
+        registers[regIndex] = input.remove(0);
+        load(regIndex, param);
     }
 
     private void mult(int param1, int param2, int regIndex, Param param) {
@@ -178,11 +182,8 @@ public class Computer {
      *                 which contains parameter value and parameter mode
      */
     private void load(int regIndex, Param param) {
-        if (param.mode == 0) {
-            memory.set(param.value, registers[regIndex]);
-        } else if (param.mode == 1) {
-            memory.set(memory.get(param.value), registers[regIndex]);
-        }
+        // will never be in immediate mode
+        memory.set(param.value, registers[regIndex]);
     }
 
     public String printMemory() {

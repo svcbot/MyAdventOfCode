@@ -1,5 +1,9 @@
 package day5;
 
+import Intcode.Computer;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Day5 {
@@ -13,6 +17,30 @@ public class Day5 {
 
     private static int solveStage1(String puzzleInput) {
 
+        List<Integer> input = new ArrayList<Integer>();
+        input.add(1);
+        Computer computer = new Computer(puzzleInput, input);
+        computer.run();
+
+        List<Integer> output = computer.output;
+        if (analyzeOutput(output)) {
+            LOG.info("Full output is:\n" + output);
+            Integer diagnosticsCode = output.remove(output.size() - 1);
+
+            LOG.info("Solution for day5 stage 1 is " + diagnosticsCode);
+            return diagnosticsCode;
+        }
+
         return 0;
     }
+
+    private static boolean analyzeOutput(List<Integer> output) {
+        output.remove(output.size() - 1);
+        for (Integer o : output) {
+            if (o != 0) return false;
+        }
+        return true;
+    }
+
+
 }
