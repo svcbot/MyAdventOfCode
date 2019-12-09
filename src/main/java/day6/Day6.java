@@ -14,8 +14,13 @@ public class Day6 {
         return solveStage1(puzzleInput);
     }
 
-    private static int solveStage1(List<String> puzzleInput) {
-        return 0;
+    public static int solveStage1(List<String> puzzleInput) {
+        UniversalOrbitMap orbitMap = new UniversalOrbitMap(puzzleInput);
+        int orbitCountChecksum = orbitMap.getOrbitCountChecksum();
+
+        LOG.info("Solution for day 6 stage 1 is " + orbitCountChecksum);
+
+        return orbitCountChecksum;
     }
 
     public static int solveStage2() {
@@ -23,7 +28,12 @@ public class Day6 {
         return solveStage2(puzzleInput);
     }
 
-    private static int solveStage2(List<String> puzzleInput) {
-        return 0;
+    public static int solveStage2(List<String> puzzleInput) {
+        UniversalOrbitMap orbitMap = new UniversalOrbitMap(puzzleInput);
+        int transfers = orbitMap.getTransfersCount("YOU", "SAN");
+
+        LOG.info("Solution for day 6 stage 2 is " + transfers);
+
+        return transfers;
     }
 }
