@@ -137,10 +137,10 @@ public class Computer {
                 MULT(instruction.params.get(0), instruction.params.get(1), instruction.params.get(2));
                 break;
             case 3:
-                IN(2, instruction.params.get(0));
+                IN(instruction.params.get(0));
                 break;
             case 4:
-                OUT(2, instruction.params.get(0));
+                OUT(instruction.params.get(0));
                 break;
             case 5:
                 JIT(instruction.params.get(0), instruction.params.get(1));
@@ -230,15 +230,15 @@ public class Computer {
         LOAD(2, param3);
     }
 
-    private void OUT(int regIndex, Param param) {
-        MOV(regIndex, param);
-        output.add(registers[regIndex]);
+    private void OUT(Param param) {
+        MOV(2, param);
+        output.add(registers[2]);
     }
 
-    private void IN(int regIndex, Param param) {
-        MOV(regIndex, param);
-        registers[regIndex] = input.remove(0);
-        LOAD(regIndex, param);
+    private void IN(Param param) {
+        MOV(2, param);
+        registers[2] = input.remove(0);
+        LOAD(2, param);
     }
 
     private void MULT(Param param1, Param param2, Param param3) {

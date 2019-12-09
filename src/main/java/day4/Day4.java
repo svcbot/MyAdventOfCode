@@ -1,7 +1,9 @@
 package day4;
 
+import Util.PuzzleInput;
 import day3.Day3;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -10,11 +12,10 @@ import java.util.stream.IntStream;
 public class Day4 {
 
     static Logger LOG = Logger.getLogger(Day3.class.toString());
-    static int puzzleInput1 = 271973;
-    static int puzzleInput2 = 785961;
 
     public static int solveStage1() {
-        return solveStage1(puzzleInput1, puzzleInput2);
+        List<Integer> puzzleInput = PuzzleInput.getDay4Input();
+        return solveStage1(puzzleInput.get(0), puzzleInput.get(1));
     }
 
     public static int solveStage1(int puzzleInput1, int puzzleInput2) {
@@ -25,7 +26,8 @@ public class Day4 {
     }
 
     public static int solveStage2() {
-        return solveStage2(puzzleInput1, puzzleInput2);
+        List<Integer> puzzleInput = PuzzleInput.getDay4Input();
+        return solveStage2(puzzleInput.get(0), puzzleInput.get(1));
     }
 
     public static int solveStage2(int puzzleInput1, int puzzleInput2) {

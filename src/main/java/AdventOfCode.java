@@ -1,7 +1,7 @@
-import day5.Day5;
+import Util.PuzzleInput;
 
 public class AdventOfCode {
     public static void main(String[] args) {
-        Day5.solveStage2();
+        System.out.println((PuzzleInput.getInput("input/day6.txt").get(0)));
     }
 }
