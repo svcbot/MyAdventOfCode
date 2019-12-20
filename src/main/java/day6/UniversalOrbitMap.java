@@ -59,7 +59,7 @@ public class UniversalOrbitMap {
             yourTransfers++;
         }
 
-        // here we just search until santas nex location appears in the visited parents map
+        // here we just search until santas next location appears in the visited parents map
         // then just add santas current transfers, and thats it
         while (!santasNextLocation.equals("COM")) {
             santasNextLocation = parentMap.get(santasNextLocation);

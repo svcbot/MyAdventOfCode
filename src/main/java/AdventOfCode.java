@@ -1,7 +1,7 @@
-import day6.Day6;
+import day7.Day7;
 
 public class AdventOfCode {
     public static void main(String[] args) {
-        Day6.solveStage2();
+        Day7.solveStage1();
     }
 }

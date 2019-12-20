@@ -39,11 +39,16 @@ public class PuzzleInput {
 
     public static String getDay5Input() {
         List<String> rawInput = getInput("./input/day5.txt");
-        return rawInput.get(0);
+        return Objects.requireNonNull(rawInput).get(0);
 
     }
 
     public static List<String> getDay6Input() {
         return getInput("./input/day6.txt");
+    }
+
+    public static String getDay7Input() {
+        List<String> rawInput = getInput("./input/day7.txt");
+        return Objects.requireNonNull(rawInput).get(0);
     }
 }
