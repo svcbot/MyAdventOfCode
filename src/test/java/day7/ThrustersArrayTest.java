@@ -1,15 +1,16 @@
 package day7;
 
 import Util.Converter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ThrustersArrayTest {
+
     @Test
-    public void thrustersArrayTestExpectedSignal() {
+    void thrustersArrayTestExpectedSignal() {
         ThrustersArray thrustersArray;
 
         String testProgram1 = "3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0";
@@ -18,7 +19,7 @@ public class ThrustersArrayTest {
         thrustersArray = new ThrustersArray(testProgram1, phaseConfig1);
         int actualSignal = thrustersArray.evaluate();
 
-        assertEquals("Expected signal 1", expectedSignal1, actualSignal);
+        assertEquals(expectedSignal1, actualSignal, "Expected signal 1");
 
         String testProgram2 = "3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0";
         List<Integer> phaseConfig2 = Converter.stringToIntList("0,1,2,3,4");
@@ -26,7 +27,7 @@ public class ThrustersArrayTest {
         thrustersArray = new ThrustersArray(testProgram2, phaseConfig2);
         int actualSignal2 = thrustersArray.evaluate();
 
-        assertEquals("Expected signal 2", expectedSignal2, actualSignal2);
+        assertEquals(expectedSignal2, actualSignal2, "Expected signal 2");
 
         String testProgram3 = "3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0";
         List<Integer> phaseConfig3 = Converter.stringToIntList("1,0,4,3,2");
@@ -34,6 +35,6 @@ public class ThrustersArrayTest {
         thrustersArray = new ThrustersArray(testProgram3, phaseConfig3);
         int actualSignal3 = thrustersArray.evaluate();
 
-        assertEquals("Expected signal 3", expectedSignal3, actualSignal3);
+        assertEquals(expectedSignal3, actualSignal3, "Expected signal 3");
     }
 }
