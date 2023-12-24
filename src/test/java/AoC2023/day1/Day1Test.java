@@ -1,13 +1,11 @@
 package AoC2023.day1;
 
-import AoC2023.Day1;
 import Util.PuzzleInput;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class Day1Test {
 
@@ -19,7 +17,7 @@ public class Day1Test {
                 a1b2c3d4e5f
                 treb7uchet""";
 
-        Optional<Integer> calibrationValue = Day1.calculateCalibrationValue(exampleInput.lines().collect(Collectors.toList()));
+        Optional<Integer> calibrationValue = Day1.calculateCalibrationValue(exampleInput.lines().toList());
         Assertions.assertTrue(calibrationValue.isPresent());
         Assertions.assertEquals(142, calibrationValue.get());
     }
@@ -35,7 +33,7 @@ public class Day1Test {
                 zoneight234
                 7pqrstsixteen""";
 
-        Optional<Integer> calibrationValue = Day1.calculateCalibrationValuePart2(exampleInput.lines().collect(Collectors.toList()));
+        Optional<Integer> calibrationValue = Day1.calculateCalibrationValuePart2(exampleInput.lines().toList());
         Assertions.assertTrue(calibrationValue.isPresent());
         Assertions.assertEquals(281, calibrationValue.get());
     }

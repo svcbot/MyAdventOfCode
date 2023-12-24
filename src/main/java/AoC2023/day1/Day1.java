@@ -1,4 +1,4 @@
-package AoC2023;
+package AoC2023.day1;
 
 import java.util.List;
 import java.util.Optional;
