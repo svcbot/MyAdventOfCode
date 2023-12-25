@@ -11,7 +11,7 @@ public class Day2 {
     static Logger LOG = Logger.getLogger(Day2.class.toString());
 
     public static int solveStage1() {
-        List<Integer> inputList = PuzzleInput.getDay2Input();
+        List<Integer> inputList = PuzzleInput.getDay2Input().toList();
         inputList.set(1, 12);
         inputList.set(2, 2);
 
@@ -22,7 +22,7 @@ public class Day2 {
 
     public static int solveStage2() {
         PuzzleInput.getDay2Input();
-        List<Integer> initialProgramm = PuzzleInput.getDay2Input();
+        List<Integer> initialProgramm = PuzzleInput.getDay2Input().toList();
         List<Integer> input;
 
         int result = 0;

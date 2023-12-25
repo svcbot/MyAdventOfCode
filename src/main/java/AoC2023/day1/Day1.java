@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Day1 {
 
@@ -11,16 +12,16 @@ public class Day1 {
     private static final Pattern firstDigit = Pattern.compile("(?=(one|two|three|four|five|six|seven|eight|nine|\\d)).*$");
     private static final Pattern lastDigit = Pattern.compile("^.*(?=(one|two|three|four|five|six|seven|eight|nine|\\d))");
 
-    public static Optional<Integer> calculateCalibrationValue(List<String> inputLines) {
-        return inputLines.stream()
+    public static Optional<Integer> calculateCalibrationValue(Stream<String> inputLines) {
+        return inputLines
                 .map(line -> line.replaceAll("[^0-9.]", ""))
                 .map(line -> line.charAt(0) + line.substring(line.length() - 1))
                 .map(Integer::valueOf)
                 .reduce(Integer::sum);
     }
 
-    public static Optional<Integer> calculateCalibrationValuePart2(List<String> inputLines) {
-        return inputLines.stream()
+    public static Optional<Integer> calculateCalibrationValuePart2(Stream<String> inputLines) {
+        return inputLines
                 .map(Day1::extractTwoDigitNumberAlphanumeric)
                 .map(Integer::valueOf)
                 .reduce(Integer::sum);

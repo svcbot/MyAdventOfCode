@@ -3,6 +3,7 @@ package AoC2023.day3;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Day3 {
 
@@ -15,7 +16,7 @@ public class Day3 {
     final HashMap<Symbol, List<SomeNumber>> gearsBySymbol = new HashMap<>();
 
 
-    public Optional<Integer> solvePart1(List<String> input) {
+    public Optional<Integer> solvePart1(Stream<String> input) {
         parseInput(input);
 
         return filterPartNumbers().stream()
@@ -23,7 +24,7 @@ public class Day3 {
                 .reduce(Integer::sum);
     }
 
-    public Optional<Integer> solvePart2(List<String> input) {
+    public Optional<Integer> solvePart2(Stream<String> input) {
         parseInput(input);
 
         findGears();
@@ -96,9 +97,10 @@ public class Day3 {
         }
     }
 
-    public void parseInput(List<String> input) {
-        for (int lineNumber = 0; lineNumber < input.size(); lineNumber++) {
-            String line = input.get(lineNumber);
+    public void parseInput(Stream<String> input) {
+        List<String> lines = input.toList();
+        for (int lineNumber = 0; lineNumber < lines.size(); lineNumber++) {
+            String line = lines.get(lineNumber);
             parseNumbers(lineNumber, line);
             parseSymbols(lineNumber, line);
         }

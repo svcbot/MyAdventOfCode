@@ -13,7 +13,7 @@ public class Day3 {
     static Logger LOG = Logger.getLogger(Day3.class.toString());
 
     public static int solveStage1() {
-        List<String> puzzleInput = PuzzleInput.getDay3Input();
+        List<String> puzzleInput = PuzzleInput.getDay3Input().toList();
         return solveStage1(puzzleInput.get(0), puzzleInput.get(1));
     }
 
@@ -47,7 +47,7 @@ public class Day3 {
     }
 
     public static int solveStage2() {
-        List<String> puzzleInput = PuzzleInput.getDay3Input();
+        List<String> puzzleInput = PuzzleInput.getDay3Input().toList();
         return solveStage2(puzzleInput.get(0), puzzleInput.get(1));
     }
 
@@ -88,7 +88,7 @@ public class Day3 {
         Point startingPoint = new Point();
         List<WireSection> wireSectionList = new ArrayList<>();
 
-        List<String> encodedWireSectionList = Arrays.stream(wireCode.split(",")).collect(Collectors.toList());
+        List<String> encodedWireSectionList = Arrays.stream(wireCode.split(",")).toList();
         for (String encodedWireSection : encodedWireSectionList) {
             WireSection wireSection = new WireSection(startingPoint, encodedWireSection);
             wireSectionList.add(wireSection);

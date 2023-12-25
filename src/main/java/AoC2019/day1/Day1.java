@@ -1,6 +1,8 @@
 package AoC2019.day1;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static Util.PuzzleInput.getDay1Input;
 
@@ -21,22 +23,32 @@ public class Day1 {
     }
 
     public static int solveStage1() {
-        List<Integer> initialMass = getDay1Input();
-        int totalFuel = 0;
-        for (int componentMass : initialMass) {
-            totalFuel += computeFuelForMass(componentMass);
+        Stream<Integer> initialMass = getDay1Input();
+        Optional<Integer> sum = initialMass
+                .map(Day1::computeFuelForMass)
+                .reduce(Integer::sum);
+
+        if (sum.isEmpty()) {
+            System.out.println("Error during calculation");
+            return 0;
+        } else {
+            System.out.printf("Day 1 stage 1 result %d", sum.get() );
+            return sum.get();
         }
-        System.out.printf("Day 1 stage 1 result %d", totalFuel );
-        return totalFuel;
     }
 
     public static int solveStage2() {
-        List<Integer> initialMass = getDay1Input();
-        int totalFuel = 0;
-        for (int componentMass : initialMass) {
-            totalFuel += computeFuelTotalMass(componentMass);
+        Stream<Integer> initialMass = getDay1Input();
+        Optional<Integer> sum = initialMass
+                .map(Day1::computeFuelTotalMass)
+                .reduce(Integer::sum);
+
+        if (sum.isEmpty()) {
+            System.out.println("Error during calculation");
+            return 0;
+        } else {
+            System.out.printf("Day 1 stage 2 result %d", sum.get() );
+            return sum.get();
         }
-        System.out.printf("Day 1 stage 2 result %d", totalFuel );
-        return totalFuel;
     }
 }

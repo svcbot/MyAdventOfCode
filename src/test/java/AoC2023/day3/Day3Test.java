@@ -4,8 +4,8 @@ import Util.PuzzleInput;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 class Day3Test {
 
@@ -24,7 +24,7 @@ class Day3Test {
                 .664.598..""";
 
         Day3 day3 = new Day3();
-        Optional<Integer> partsSum = day3.solvePart1(exampleInput.lines().toList());
+        Optional<Integer> partsSum = day3.solvePart1(exampleInput.lines());
 
         Assertions.assertTrue(partsSum.isPresent());
         Assertions.assertEquals(4361, partsSum.get());
@@ -39,7 +39,7 @@ class Day3Test {
                 """;
 
         Day3 day3 = new Day3();
-        Optional<Integer> partsSum = day3.solvePart1(exampleInput.lines().toList());
+        Optional<Integer> partsSum = day3.solvePart1(exampleInput.lines());
 
         Assertions.assertTrue(partsSum.isPresent());
         Assertions.assertEquals(1111, partsSum.get());
@@ -54,7 +54,7 @@ class Day3Test {
                 """;
 
         Day3 day3 = new Day3();
-        Optional<Integer> partsSum = day3.solvePart1(exampleInput.lines().toList());
+        Optional<Integer> partsSum = day3.solvePart1(exampleInput.lines());
 
         Assertions.assertTrue(partsSum.isPresent());
         Assertions.assertEquals(2222, partsSum.get());
@@ -75,7 +75,7 @@ class Day3Test {
                 .664.598..""";
 
         Day3 day3 = new Day3();
-        Optional<Integer> partsSum = day3.solvePart2(exampleInput.lines().toList());
+        Optional<Integer> partsSum = day3.solvePart2(exampleInput.lines());
 
         Assertions.assertTrue(partsSum.isPresent());
         Assertions.assertEquals(467835, partsSum.get());
@@ -83,8 +83,7 @@ class Day3Test {
 
     @Test
     void solvePart1() {
-        List<String> input = PuzzleInput.getInput("AoC2023/day3.txt");
-        Assertions.assertEquals(140, input.size());
+        Stream<String> input = PuzzleInput.getInput("AoC2023/day3.txt");
 
         Day3 day3 = new Day3();
         Optional<Integer> partsSum = day3.solvePart1(input);
@@ -95,7 +94,7 @@ class Day3Test {
 
     @Test
     void solvePart2() {
-        List<String> input = PuzzleInput.getInput("AoC2023/day3.txt");
+        Stream<String> input = PuzzleInput.getInput("AoC2023/day3.txt");
 
         Day3 day3 = new Day3();
         Optional<Integer> partsSum = day3.solvePart2(input);

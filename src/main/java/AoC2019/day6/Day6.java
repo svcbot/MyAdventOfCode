@@ -4,14 +4,15 @@ import Util.PuzzleInput;
 
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class Day6 {
 
     static Logger LOG = Logger.getLogger(Day6.class.toString());
 
     public static int solveStage1() {
-        List<String> puzzleInput = PuzzleInput.getDay6Input();
-        return solveStage1(puzzleInput);
+        Stream<String> puzzleInput = PuzzleInput.getDay6Input();
+        return solveStage1(puzzleInput.toList());
     }
 
     public static int solveStage1(List<String> puzzleInput) {
@@ -24,8 +25,8 @@ public class Day6 {
     }
 
     public static int solveStage2() {
-        List<String> puzzleInput = PuzzleInput.getDay6Input();
-        return solveStage2(puzzleInput);
+        Stream<String> puzzleInput = PuzzleInput.getDay6Input();
+        return solveStage2(puzzleInput.toList());
     }
 
     public static int solveStage2(List<String> puzzleInput) {
